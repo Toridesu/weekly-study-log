@@ -24,9 +24,12 @@ https://tailwindcss.com/docs/guides/vite
 https://ui.shadcn.com/docs/installation/vite
 
 ## 💡 学びのポイント
+  # Windows側で作業中の変更を一時保存
+  git stash
 
-
-
+  # Mac側で
+  git pull  # 最新を取得
+  git stash pop  # 保存した作業を復元
 
 ## 📚 学習メモ
 
@@ -36,3 +39,8 @@ https://ui.shadcn.com/docs/installation/vite
   - vite.configのimport react from '@vitejs/plugin-react-swc';ここ公式だとswcないからエラーだったすぐ気づけて良かった。
   - vite tailwind shadcnの流れ慣れてきた
   - npx shadcn@latest add 
+  - 環境構築での初期エラー
+  tsconfig.app .node にエラー。 
+  "incremental": true, // この行を追加 これで対処した。
+  "noUncheckedSideEffectImports": true ここでエラー出てた。 削除して対処した。
+  - 
