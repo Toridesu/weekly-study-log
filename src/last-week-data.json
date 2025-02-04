@@ -1,0 +1,116 @@
+{
+  "logs": [
+    {
+      "id": "lw1",
+      "day": "月",
+      "category": "読書",
+      "minutes": 45,
+      "memo": "新しい小説を始めた。最初の数ページは少し退屈だった",
+      "motivation": "normal"
+    },
+    {
+      "id": "lw2",
+      "day": "月",
+      "category": "プログラミング",
+      "minutes": 180,
+      "memo": "TypeScriptの基礎を復習",
+      "motivation": "positive"
+    },
+    {
+      "id": "lw3",
+      "day": "火",
+      "category": "英語",
+      "minutes": 90,
+      "memo": "オンライン英会話で初めてのレッスン",
+      "motivation": "positive"
+    },
+    {
+      "id": "lw4",
+      "day": "火",
+      "category": "プログラミング",
+      "minutes": 120,
+      "memo": "バグ修正に時間がかかった",
+      "motivation": "negative"
+    },
+    {
+      "id": "lw5",
+      "day": "水",
+      "category": "読書",
+      "minutes": 30,
+      "memo": "通勤電車の中で読書",
+      "motivation": "normal"
+    },
+    {
+      "id": "lw6",
+      "day": "水",
+      "category": "英語",
+      "minutes": 60,
+      "memo": "英語のポッドキャストを聴いた",
+      "motivation": "normal"
+    },
+    {
+      "id": "lw7",
+      "day": "木",
+      "category": "プログラミング",
+      "minutes": 150,
+      "memo": "新機能の設計と実装",
+      "motivation": "positive"
+    },
+    {
+      "id": "lw8",
+      "day": "木",
+      "category": "読書",
+      "minutes": 40,
+      "memo": "技術書を読んでみた",
+      "motivation": "normal"
+    },
+    {
+      "id": "lw9",
+      "day": "金",
+      "category": "英語",
+      "minutes": 45,
+      "memo": "英語の記事を読んで単語を覚えた",
+      "motivation": "normal"
+    },
+    {
+      "id": "lw10",
+      "day": "金",
+      "category": "プログラミング",
+      "minutes": 90,
+      "memo": "コードレビューとリファクタリング",
+      "motivation": "normal"
+    },
+    {
+      "id": "lw11",
+      "day": "土",
+      "category": "読書",
+      "minutes": 120,
+      "memo": "週末なのでじっくり読書",
+      "motivation": "positive"
+    },
+    {
+      "id": "lw12",
+      "day": "土",
+      "category": "英語",
+      "minutes": 90,
+      "memo": "Netflix で英語の映画を字幕なしで挑戦",
+      "motivation": "positive"
+    },
+    {
+      "id": "lw13",
+      "day": "日",
+      "category": "プログラミング",
+      "minutes": 240,
+      "memo": "個人プロジェクトの開発に没頭",
+      "motivation": "positive"
+    },
+    {
+      "id": "lw14",
+      "day": "日",
+      "category": "読書",
+      "minutes": 60,
+      "memo": "寝る前の読書習慣",
+      "motivation": "normal"
+    }
+  ]
+}

@@ -38,9 +38,9 @@ https://ui.shadcn.com/docs/installation/vite
   - TailwindCSS Vite用のじゃないやつでインストールしてしまったので再作成。だから↑のcontentになってたのか......
   - vite.configのimport react from '@vitejs/plugin-react-swc';ここ公式だとswcないからエラーだったすぐ気づけて良かった。
   - vite tailwind shadcnの流れ慣れてきた
-  - npx shadcn@latest add 
+  - npx shadcn@latest add
   - 環境構築での初期エラー
-  tsconfig.app .node にエラー。 
+  tsconfig.app .node にエラー。
   "incremental": true, // この行を追加 これで対処した。
   "noUncheckedSideEffectImports": true ここでエラー出てた。 削除して対処した。
-  - 
+  -カテゴリ集計3まで

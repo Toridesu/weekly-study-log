@@ -3,6 +3,7 @@ import { INITIAL_LOGS } from "./constants";
 import { StudyLog } from "./types";
 import StudyLogList from "./components/StudyLogList";
 import TotalAnalytics from "./components/TotalAnalytics";
+import CategoryData from "./components/CategoryData";
 
 function App() {
   // 学習ログの状態管理
@@ -37,6 +38,7 @@ function App() {
         <main className="flex gap-12">
           <div className="w-3/4 h-full space-y-6">
             {/* 3つのカード */}
+            <CategoryData logs={logs} />
             {/* グラフ */}
             <TotalAnalytics logs={logs} />
             <StudyLogList logs={logs} onDelete={deleteLog} />
