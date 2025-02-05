@@ -43,9 +43,3 @@ https://ui.shadcn.com/docs/installation/vite
   tsconfig.app .node にエラー。
   "incremental": true, // この行を追加 これで対処した。
   "noUncheckedSideEffectImports": true ここでエラー出てた。 削除して対処した。
-  - カテゴリ集計3まで
-
-
-git remote add origin https://github.com/Toridesu/weekly-study-log
-git branch -M main
-git push -u origin main
