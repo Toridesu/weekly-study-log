@@ -1,19 +1,15 @@
-import { Logs } from "lucide-react";
-import { CATEGORIE_VARIANTS, MOTIVATION_VARIANTS } from "../constants";
+import { StudyLog } from '../types';
+import { CATEGORIE_VARIANTS, MOTIVATION_VARIANTS } from '../constants';
 
-// カテゴリー固有の絵文字を取得する関数
+// カテゴリー固有のアイコンを取得する関数
 export const getCategoryIcon = (category: string): string => {
-  const categoryObject = CATEGORIE_VARIANTS.find(
-    (c) => c.category === category
-  );
-  return categoryObject?.emoji || "✏️";
+  const categoryObject = CATEGORIE_VARIANTS.find((c) => c.category === category);
+  return categoryObject?.emoji || '✏️';
 };
 
-// モチベーション固有のアイコンデータを取得する関数
+// モチベーション固有のアイコンを取得する関数
 export const getMotivationObject = (motivation: string) => {
-  const motivationObject = MOTIVATION_VARIANTS.find(
-    (r) => r.rank === motivation
-  );
+  const motivationObject = MOTIVATION_VARIANTS.find((r) => r.rank === motivation);
   return motivationObject;
 };
 
@@ -41,14 +37,11 @@ export const getTotalMinutesByDay = (logs: StudyLog[], day: string) => {
 };
 
 // logの配列とカテゴリーを受け取り、一致するログのみを抽出する関数
-export const filterByCategory = (logs: StudyLog[], category: string) => {
+const filterByCategory = (logs: StudyLog[], category: string) => {
   return logs.filter((log) => log.category === category);
 };
 
 // logの配列とカテゴリーを受け取り、一致するカテゴリーの合計時間を算出する関数
-export const getTotalMinutesByCategory = (
-  logs: StudyLog[],
-  category: string
-) => {
+export const getTotalMinutesByCategory = (logs: StudyLog[], category: string) => {
   return getTotalMinutes(filterByCategory(logs, category));
 };
