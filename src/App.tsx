@@ -7,6 +7,7 @@ import { INITIAL_LOGS } from "./constants";
 import { StudyLog } from "./types";
 
 function App() {
+
   const [logs, setLogs] = useState<StudyLog[]>(INITIAL_LOGS);
 
   // ログの追加処理をメモ化

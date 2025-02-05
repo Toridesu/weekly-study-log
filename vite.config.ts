@@ -4,7 +4,7 @@ import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: process.env.GITHUB_PAGES ? "REPOSITORY_NAME" : "./",
+  base: process.env.GITHUB_PAGES ? "https://github.com/Toridesu/weekly-study-log" : "./",
   plugins: [react()],
   resolve: {
     alias: {
