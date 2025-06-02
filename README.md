@@ -1,45 +1,73 @@
-# React + TypeScript 学習プロジェクト
+![Image](https://github.com/user-attachments/assets/619a71fa-c433-4ab5-b267-1d7a341c8fa1)
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.6.2-blue)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18.3.1-61dafb)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-6.0.1-646cff)](https://vitejs.dev/)
+# 週間学習記録アプリ
 
-## 🔧 開発環境
+**日々の学習内容と時間を記録し、週ごとに振り返るための Web アプリケーションです。**
 
-- Node.js: 22.10.0
-- パッケージマネージャー: npm
-- エディタ: Cursor
+このプロジェクトでは、学習の習慣化と進捗の可視化を目的として、週間学習記録アプリを構築しました。
 
-### 使用している主要パッケージ
+## ✨ 主な機能
 
-- react: 18.3.1
-- typescript: 5.6.2
-- vite: 6.0.5
-- eslint: 9.17.0
+- **学習記録の入力:** 学習した内容と時間を記録できます。
+- **カテゴリ別集計:** 学習内容をカテゴリ別に分類し、それぞれの学習時間を集計・表示します。
+- **週間レポート:** 週ごとの学習時間や達成度をグラフなどで可視化します。
+- **目標設定:** 週ごとの学習目標を設定し、進捗を確認できます。（予定）
 
-## 📖 参考にした資料
-- Vite TailwindCSS
-https://tailwindcss.com/docs/guides/vite
-- shadcn/ui
-https://ui.shadcn.com/docs/installation/vite
+## 🚀 技術スタック
 
-## 💡 学びのポイント
-  # Windows側で作業中の変更を一時保存
-  git stash
+- **ビルドツール:** Vite
+- **フレームワーク/ライブラリ:** React
+- **言語:** TypeScript
+- **スタイリング:** Tailwind CSS
+- **UI コンポーネント:** shadcn/ui (lucide-react, class-variance-authority, clsx, tailwind-merge を利用)
 
-  # Mac側で
-  git pull  # 最新を取得
-  git stash pop  # 保存した作業を復元
+## 🛠️ 開発環境のセットアップ
 
-## 📚 学習メモ
+1. **リポジトリをクローン:**
+   ```bash
+   git clone https://github.com/あなたのユーザー名/weekly-study-log.git # ご自身のプロジェクト名に変更してください
+   cd weekly-study-log
+   ```
+2. **依存パッケージのインストール:**
+   ```bash
+   npm install
+   # または
+   # yarn install
+   # または
+   # pnpm install
+   ```
+3. **開発サーバーの起動:**
+   ```bash
+   npm run dev
+   # または
+   # yarn dev
+   # または
+   # pnpm dev
+   ```
+   ブラウザで `http://localhost:5173` (Vite のデフォルトポート) を開きます。
 
-- 2025/01/02 11:30~
-  - 公式ドキュメントだとcontent: ["./src/**/*.{html,js}"],だがcontent: ['./index.html', './src//*.{js,ts,jsx,tsx}'],こうした方がいいかも。TS使うし。
-  - TailwindCSS Vite用のじゃないやつでインストールしてしまったので再作成。だから↑のcontentになってたのか......
-  - vite.configのimport react from '@vitejs/plugin-react-swc';ここ公式だとswcないからエラーだったすぐ気づけて良かった。
-  - vite tailwind shadcnの流れ慣れてきた
-  - npx shadcn@latest add
-  - 環境構築での初期エラー
-  tsconfig.app .node にエラー。
-  "incremental": true, // この行を追加 これで対処した。
-  "noUncheckedSideEffectImports": true ここでエラー出てた。 削除して対処した。
+## 📁 プロジェクト構成 (src ディレクトリ)
+
+```
+src
+├── App.tsx              # アプリケーションのメインコンポーネント
+├── components/          # 再利用可能なUIコンポーネント群
+│   ├── StudyLogForm.tsx   # 学習記録フォーム
+│   ├── CategoryData.tsx   # カテゴリ別集計データ表示
+│   ├── StudyLogList.tsx   # 学習記録リスト表示
+│   └── TotalAnalytics.tsx # 全体的な学習分析表示
+├── last-week-data.json  # 先週の学習データ（仮）
+├── utils/               # 汎用的なユーティリティ関数
+│   └── index.ts
+├── constants/           # アプリケーション全体で使われる定数
+│   └── index.ts
+├── types/               # TypeScriptの型定義
+│   └── index.ts
+├── lib/                 # 外部ライブラリの設定やユーティリティ
+│   └── utils.ts         # shadcn/ui のユーティリティ関数 (cnなど)
+├── index.css            # グローバルなCSSスタイル
+├── main.tsx             # アプリケーションのエントリーポイント
+└── vite-env.d.ts        # Vite環境の型定義
+```
+
+---
