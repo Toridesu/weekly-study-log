@@ -1,104 +1,133 @@
-import { memo, useState } from "react";  // memo のインポート
-import { StudyLog } from "../types";
-import {
-  CATEGORIE_VARIANTS,
-  MOTIVATION_VARIANTS,
-  WEEK_DAYS,
-} from "../constants";
+import { useEffect, useState } from "react";
+import { CATEGORY_VARIANTS, MOTIVATION_VARIANTS } from "../constants";
+import type { Category, Motivation, NewStudyLog } from "../types";
 
 type StudyFormProps = {
-  onSubmit: (log: Omit<StudyLog, "id">) => void;
+  defaultDate: string;
+  onSubmit: (log: NewStudyLog) => void;
 };
 
-const StudyForm = memo((props: StudyFormProps) => {
-  console.log("StudyFormのレンダリング");
-  const [day, setDay] = useState<StudyLog['day'] | ''>();
-  const [category, setCategory] = useState<StudyLog['category'] | ''>();
-  const [motivation, setMotivation] = useState<StudyLog['motivation'] | ''>();
-  const [minutes, setMinutes] = useState(0);
-  const [memo, setMemo] = useState('');
+const StudyForm = ({ defaultDate, onSubmit }: StudyFormProps) => {
+  const [date, setDate] = useState(defaultDate);
+  const [category, setCategory] = useState<Category | "">("");
+  const [motivation, setMotivation] = useState<Motivation | "">("");
+  const [minutes, setMinutes] = useState("");
+  const [memo, setMemo] = useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!day || !category || !motivation || !minutes) {
-      return;
-    }
+  useEffect(() => setDate(defaultDate), [defaultDate]);
 
-    const log = {
-      day,
-      category,
-      motivation,
-      minutes: minutes,
-      memo,
-    };
-    props.onSubmit(log);
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    setDay('');
-    setCategory('');
-    setMotivation('');
-    setMinutes(0);
-    setMemo('');
+    onSubmit({
+      date,
+      category: category as Category,
+      motivation: motivation as Motivation,
+      minutes: Number(minutes),
+      memo: memo.trim(),
+    });
+
+    setCategory("");
+    setMotivation("");
+    setMinutes("");
+    setMemo("");
   };
-  return (
-    <div className='bg-white shadow-sm rounded-lg p-6 mb-4'>
-      <h2 className='text-lg font-semibold text-gray-900 mb-3'>新規ログの追加</h2>
 
-      <form className='space-y-3' onSubmit={handleSubmit}>
-        <div className='grid grid-cols-1 gap-3 space-y-3'>
-          {/* 曜日選択 */}
-          <div>
-            <select id='day' value={day} onChange={(e) => setDay(e.target.value as StudyLog['day'])} className='block text-sm text-gray-700 w-full rounded-md p-2 border shadow-sm '>
-              <option value=''>曜日</option>
-              {WEEK_DAYS.map((day) => (
-                <option key={day} value={day}>
-                  {day}
-                </option>
-              ))}
-            </select>
-          </div>
-          {/* カテゴリー選択 */}
-          <div>
-            <select id='category' value={category} onChange={(e) => setCategory(e.target.value as StudyLog['category'])} className='block w-full text-sm text-gray-700 rounded-md p-2 border shadow-sm '>
-              <option value=''>学習トピック</option>
-              {CATEGORIE_VARIANTS.map(({ category }) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-          </div>
-          {/* 作業時間入力 */}
-          <div>
-            <label htmlFor='minutes' className='block text-sm font-medium text-gray-700 mb-1'>
-              作業時間
-            </label>
-            <input type='number' id='minutes' value={minutes} onChange={(e) => setMinutes(Number(e.target.value))} placeholder='(分)' className='block p-2 text-sm border w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50' />
-          </div>
-          {/* モチベーション選択 */}
-          <div>
-            <span className='block text-sm font-medium text-gray-700 mb-1'>自己評価</span>
-            <div className='flex space-x-1'>
-              {MOTIVATION_VARIANTS.map(({ rank, Icon, color }) => (
-                <button type='button' onClick={() => setMotivation(rank as StudyLog['motivation'])} key={rank} className={`w-full rounded-xl border p-6 ${motivation === rank && 'bg-gray-100'}`}>
-                  <Icon className={`w-8 h-8 ${color}`} />
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-        {/* メモ入力 */}
+  return (
+    <section className="card p-6">
+      <h2 className="text-lg font-semibold">学習ログを追加</h2>
+      <p className="mt-1 text-sm text-slate-500">入力内容はこのブラウザに保存されます。</p>
+
+      <form className="mt-5 space-y-4" onSubmit={handleSubmit}>
         <div>
-          <label htmlFor='memo' className='block text-sm font-medium text-gray-700 mb-1'>
-            メモ：
-          </label>
-          <textarea id='memo' value={memo} onChange={(e) => setMemo(e.target.value)} placeholder='（任意）' className='block border text-sm p-2 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 h-20' />
+          <label className="label" htmlFor="date">日付</label>
+          <input
+            className="input"
+            id="date"
+            onChange={(event) => setDate(event.target.value)}
+            required
+            type="date"
+            value={date}
+          />
         </div>
-        {/* 送信ボタン */}
-        <button type='submit' className='w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors'>
-          追加
-        </button>
+
+        <div>
+          <label className="label" htmlFor="category">学習トピック</label>
+          <select
+            className="input"
+            id="category"
+            onChange={(event) => setCategory(event.target.value as Category)}
+            required
+            value={category}
+          >
+            <option value="">選択してください</option>
+            {CATEGORY_VARIANTS.map(({ category: name }) => (
+              <option key={name} value={name}>{name}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="label" htmlFor="minutes">学習時間（分）</label>
+          <input
+            className="input"
+            id="minutes"
+            min="1"
+            onChange={(event) => setMinutes(event.target.value)}
+            placeholder="例: 60"
+            required
+            step="1"
+            type="number"
+            value={minutes}
+          />
+        </div>
+
+        <fieldset>
+          <legend className="label">自己評価</legend>
+          <div className="flex gap-2">
+            {MOTIVATION_VARIANTS.map(({ rank, label, Icon, color }) => (
+              <button
+                aria-label={`自己評価: ${label}`}
+                aria-pressed={motivation === rank}
+                className={`flex flex-1 flex-col items-center gap-1 rounded-lg border p-3 text-xs font-medium transition ${
+                  motivation === rank
+                    ? "border-blue-500 bg-blue-50"
+                    : "border-slate-300 hover:bg-slate-50"
+                }`}
+                key={rank}
+                onClick={() => setMotivation(rank)}
+                type="button"
+              >
+                <Icon aria-hidden="true" className={`h-6 w-6 ${color}`} />
+                {label}
+              </button>
+            ))}
+          </div>
+          <input
+            className="sr-only"
+            onChange={() => undefined}
+            required
+            tabIndex={-1}
+            value={motivation}
+          />
+        </fieldset>
+
+        <div>
+          <label className="label" htmlFor="memo">メモ（任意）</label>
+          <textarea
+            className="input min-h-24 resize-y"
+            id="memo"
+            maxLength={300}
+            onChange={(event) => setMemo(event.target.value)}
+            placeholder="学んだことや次に取り組むこと"
+            value={memo}
+          />
+        </div>
+
+        <button className="primary-button w-full" type="submit">ログを追加</button>
       </form>
-    </div>
+    </section>
   );
-});
+};
+
 export default StudyForm;

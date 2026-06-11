@@ -1,54 +1,45 @@
-import { StudyLog } from '../types';
-import { getCategoryIcon, getTotalMinutesByCategory } from '../utils';
-import LastWeekData from '../last-week-data.json';
-import { useMemo } from 'react';
+import { useMemo } from "react";
+import { CATEGORY_VARIANTS } from "../constants";
+import type { StudyLog } from "../types";
+import { summarizeLogs } from "../utils";
 
 type CategoryDataProps = {
   logs: StudyLog[];
+  previousWeekLogs: StudyLog[];
 };
 
-const CategoryData = ({ logs }: CategoryDataProps) => {
-  // 先週のデータをメモ化
-  const lastWeekTotals = useMemo(() => {
-    console.log('先週のカテゴリ合計の計算');
-    const lastWeekLogs = LastWeekData.logs as StudyLog[];
-    return {
-      プログラミング: getTotalMinutesByCategory(lastWeekLogs, 'プログラミング'),
-      読書: getTotalMinutesByCategory(lastWeekLogs, '読書'),
-      英語: getTotalMinutesByCategory(lastWeekLogs, '英語'),
-    };
-  }, []); // 空の依存配列 → 初回レンダリング時のみ実行
-
-  // 今週のデータは毎回計算（logsの変更を反映するため）
-  console.log('今週のカテゴリ合計の計算');
-  const currentCategoryTotals = {
-    プログラミング: getTotalMinutesByCategory(logs, 'プログラミング'),
-    読書: getTotalMinutesByCategory(logs, '読書'),
-    英語: getTotalMinutesByCategory(logs, '英語'),
-  };
+const CategoryData = ({ logs, previousWeekLogs }: CategoryDataProps) => {
+  const current = useMemo(() => summarizeLogs(logs), [logs]);
+  const previous = useMemo(() => summarizeLogs(previousWeekLogs), [previousWeekLogs]);
 
   return (
-    <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-      {Object.entries(currentCategoryTotals).map(([category, total]) => (
-        <div key={category} className='p-4 border border-gray-400 rounded-xl bg-white/50 backdrop-blur-sm space-y-2'>
-          <div className='flex items-center justify-between gap-2'>
-            <h3 className='font-semibold text-sm'>{category}</h3>
-            <span className='text-3xl'>{getCategoryIcon(category)}</span>
-          </div>
-          <div className='flex items-center justify-between gap-2'>
-            <p className='text-2xl font-bold'>
-              {total || 0}
-              <span className='text-sm text-gray-500'> 分</span>
+    <section aria-label="カテゴリ別学習時間" className="grid gap-4 md:grid-cols-3">
+      {CATEGORY_VARIANTS.map(({ category, Icon, color, background }) => {
+        const currentMinutes = current.minutesByCategory[category];
+        const difference = currentMinutes - previous.minutesByCategory[category];
+
+        return (
+          <article className="card p-5" key={category}>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="text-sm font-semibold text-slate-600">{category}</h2>
+                <p className="mt-2 text-3xl font-bold">
+                  {currentMinutes}
+                  <span className="ml-1 text-sm font-medium text-slate-500">分</span>
+                </p>
+              </div>
+              <span className={`rounded-xl p-3 ${background}`}>
+                <Icon aria-hidden="true" className={`h-6 w-6 ${color}`} />
+              </span>
+            </div>
+            <p className={`mt-3 text-xs font-medium ${difference >= 0 ? "text-emerald-700" : "text-rose-700"}`}>
+              前週比 {difference >= 0 ? "+" : ""}
+              {difference}分
             </p>
-            <p className='text-gray-500 text-sm'>
-              <span className='mr-2 text-gray-300 text-2xl'>/</span>
-              {lastWeekTotals[category as keyof typeof lastWeekTotals] || 0}
-              分（先週）
-            </p>
-          </div>
-        </div>
-      ))}
-    </div>
+          </article>
+        );
+      })}
+    </section>
   );
 };
 

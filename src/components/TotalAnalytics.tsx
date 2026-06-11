@@ -1,69 +1,60 @@
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
-import { StudyLog } from "../types";
-import {
-  getTotalCountByMotivation,
-  getTotalMinutes,
-  getTotalMinutesByDay,
-} from "../utils";
-import { MOTIVATION_VARIANTS, WEEK_DAYS } from "../constants";
+import { useMemo } from "react";
+import { MOTIVATION_VARIANTS, WEEK_DAY_LABELS } from "../constants";
+import type { StudyLog } from "../types";
+import { summarizeLogs } from "../utils";
 
 type TotalAnalyticsProps = {
   logs: StudyLog[];
 };
 
 const TotalAnalytics = ({ logs }: TotalAnalyticsProps) => {
-  const dailyData = WEEK_DAYS.map((day) => ({
-    day,
-    minutes: getTotalMinutesByDay(logs, day),
-  }));
-  const weeklyTotal = getTotalMinutes(logs);
-  const motivationCount = getTotalCountByMotivation(logs);
+  const summary = useMemo(() => summarizeLogs(logs), [logs]);
+  const maximumMinutes = Math.max(...Object.values(summary.minutesByDay), 1);
 
   return (
-    <div className="p-6 bg-white/50 border border-gray-400 rounded-xl  backdrop-blur-sm space-y-6">
-      <div className="pb-6 grid grid-cols-1 md:grid-cols-3 gap-4 border-b">
-        <div className="space-y-2 col-span-2">
-          <span className="font-semibold">今週の合計学習時間</span>
-          <h3 className="text-3xl font-bold">
-            {weeklyTotal} <span className="text-sm text-gray-500">分</span>
-          </h3>
+    <section className="card space-y-6 p-6">
+      <div className="grid gap-6 border-b border-slate-200 pb-6 md:grid-cols-3">
+        <div className="md:col-span-2">
+          <h2 className="text-sm font-semibold text-slate-600">週間合計</h2>
+          <p className="mt-2 text-4xl font-bold">
+            {summary.totalMinutes}
+            <span className="ml-1 text-sm font-medium text-slate-500">分</span>
+          </p>
         </div>
-        <div className="">
-          <h3 className="font-semibold mb-2">自己評価</h3>
-          <div className="flex justify-between items-center mt-2">
-            {MOTIVATION_VARIANTS.map(({ rank, Icon, color }) => (
-              <div
-                key={rank}
-                className={`flex flex-col items-center text-lg font-bold ${color}`}
-              >
-                <Icon className="w-8 h-8" />
-                <span className="text-sm text-gray-500">
-                  {motivationCount[rank] || 0}
-                </span>
+        <div>
+          <h2 className="text-sm font-semibold text-slate-600">自己評価</h2>
+          <div className="mt-3 flex justify-between">
+            {MOTIVATION_VARIANTS.map(({ rank, label, Icon, color }) => (
+              <div className="flex flex-col items-center gap-1" key={rank}>
+                <Icon aria-label={label} className={`h-7 w-7 ${color}`} />
+                <span className="text-sm font-semibold">{summary.countByMotivation[rank]}</span>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="h-[300px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={dailyData}>
-            <XAxis dataKey="day" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="minutes" fill="#3b82f6" />
-          </BarChart>
-        </ResponsiveContainer>
+      <div aria-label="曜日別学習時間グラフ">
+        <div className="grid h-60 grid-cols-7 items-end gap-2 sm:gap-4">
+          {WEEK_DAY_LABELS.map((day) => {
+            const minutes = summary.minutesByDay[day];
+            const height = `${Math.max((minutes / maximumMinutes) * 100, minutes ? 4 : 0)}%`;
+
+            return (
+              <div className="flex h-full flex-col justify-end gap-2 text-center" key={day}>
+                <span className="text-xs font-medium text-slate-500">{minutes || ""}</span>
+                <div
+                  aria-label={`${day}曜日 ${minutes}分`}
+                  className="min-h-0 rounded-t-md bg-blue-600 transition-[height]"
+                  style={{ height }}
+                />
+                <span className="text-sm font-medium text-slate-600">{day}</span>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

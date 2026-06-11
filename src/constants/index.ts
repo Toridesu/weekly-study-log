@@ -1,65 +1,47 @@
-import { Frown, Laugh, Meh } from "lucide-react";
-import { StudyLog } from "../types";
+import { BookOpen, Code2, Frown, Languages, Laugh, Meh } from "lucide-react";
 
-export const WEEK_DAYS = ["月", "火", "水", "木", "金", "土", "日"];
+export const STORAGE_KEY = "weekly-study-log:logs";
 
-export const CATEGORIE_VARIANTS = [
+export const WEEK_DAY_LABELS = ["月", "火", "水", "木", "金", "土", "日"] as const;
+
+export const CATEGORY_VARIANTS = [
   {
     category: "プログラミング",
-    emoji: "💻",
+    Icon: Code2,
+    color: "text-blue-600",
+    background: "bg-blue-50",
   },
   {
     category: "読書",
-    emoji: "📚",
+    Icon: BookOpen,
+    color: "text-amber-600",
+    background: "bg-amber-50",
   },
   {
     category: "英語",
-    emoji: "🗽",
+    Icon: Languages,
+    color: "text-emerald-600",
+    background: "bg-emerald-50",
   },
-];
+] as const;
 
 export const MOTIVATION_VARIANTS = [
   {
     rank: "negative",
+    label: "低め",
     Icon: Frown,
-    color: "text-gray-400",
+    color: "text-slate-400",
   },
   {
     rank: "normal",
+    label: "普通",
     Icon: Meh,
-    color: "text-yellow-500",
+    color: "text-amber-500",
   },
-
   {
     rank: "positive",
+    label: "高め",
     Icon: Laugh,
-    color: "text-blue-500",
+    color: "text-blue-600",
   },
-];
-
-export const INITIAL_LOGS: StudyLog[] = [
-  {
-    id: "1",
-    day: "月",
-    category: "読書",
-    minutes: 60,
-    memo: "１章を読み終えた！",
-    motivation: "positive",
-  },
-  {
-    id: "2",
-    day: "火",
-    category: "プログラミング",
-    minutes: 240,
-    memo: "開発中のアプリに、機能を2つ追加",
-    motivation: "normal",
-  },
-  {
-    id: "3",
-    day: "水",
-    category: "英語",
-    minutes: 120,
-    memo: "リスニングを始めた！初日なので、あまり聞き取れなかった",
-    motivation: "negative",
-  },
-];
+] as const;

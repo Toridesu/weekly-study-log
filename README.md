@@ -1,73 +1,79 @@
-![Image](https://github.com/user-attachments/assets/619a71fa-c433-4ab5-b267-1d7a341c8fa1)
+# Weekly Study Log
 
-# 週間学習記録アプリ
+学習時間と簡単な振り返りを記録し、週単位で確認するブラウザアプリです。
 
-**日々の学習内容と時間を記録し、週ごとに振り返るための Web アプリケーションです。**
+データはサーバーへ送信せず、利用中のブラウザの `localStorage` に保存します。
 
-このプロジェクトでは、学習の習慣化と進捗の可視化を目的として、週間学習記録アプリを構築しました。
+## Features
 
-## ✨ 主な機能
+- 日付、カテゴリ、学習時間、自己評価、メモを記録
+- 選択した週の合計時間、曜日別時間、カテゴリ別時間を集計
+- カテゴリ別学習時間を前週と比較
+- 前後の週へ移動して過去の記録を確認
+- 保存済みデータを読み込む際に不正なレコードを除外
+- モバイルとデスクトップに対応
 
-- **学習記録の入力:** 学習した内容と時間を記録できます。
-- **カテゴリ別集計:** 学習内容をカテゴリ別に分類し、それぞれの学習時間を集計・表示します。
-- **週間レポート:** 週ごとの学習時間や達成度をグラフなどで可視化します。
-- **目標設定:** 週ごとの学習目標を設定し、進捗を確認できます。（予定）
+## Tech Stack
 
-## 🚀 技術スタック
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- Vitest
+- Lucide React
 
-- **ビルドツール:** Vite
-- **フレームワーク/ライブラリ:** React
-- **言語:** TypeScript
-- **スタイリング:** Tailwind CSS
-- **UI コンポーネント:** shadcn/ui (lucide-react, class-variance-authority, clsx, tailwind-merge を利用)
+グラフは7日分の単純な棒グラフであるため、チャートライブラリを使わず CSS で実装しています。
 
-## 🛠️ 開発環境のセットアップ
+## Getting Started
 
-1. **リポジトリをクローン:**
-   ```bash
-   git clone https://github.com/あなたのユーザー名/weekly-study-log.git # ご自身のプロジェクト名に変更してください
-   cd weekly-study-log
-   ```
-2. **依存パッケージのインストール:**
-   ```bash
-   npm install
-   # または
-   # yarn install
-   # または
-   # pnpm install
-   ```
-3. **開発サーバーの起動:**
-   ```bash
-   npm run dev
-   # または
-   # yarn dev
-   # または
-   # pnpm dev
-   ```
-   ブラウザで `http://localhost:5173` (Vite のデフォルトポート) を開きます。
+前提環境:
 
-## 📁 プロジェクト構成 (src ディレクトリ)
+- Node.js 22
+- npm
 
-```
-src
-├── App.tsx              # アプリケーションのメインコンポーネント
-├── components/          # 再利用可能なUIコンポーネント群
-│   ├── StudyLogForm.tsx   # 学習記録フォーム
-│   ├── CategoryData.tsx   # カテゴリ別集計データ表示
-│   ├── StudyLogList.tsx   # 学習記録リスト表示
-│   └── TotalAnalytics.tsx # 全体的な学習分析表示
-├── last-week-data.json  # 先週の学習データ（仮）
-├── utils/               # 汎用的なユーティリティ関数
-│   └── index.ts
-├── constants/           # アプリケーション全体で使われる定数
-│   └── index.ts
-├── types/               # TypeScriptの型定義
-│   └── index.ts
-├── lib/                 # 外部ライブラリの設定やユーティリティ
-│   └── utils.ts         # shadcn/ui のユーティリティ関数 (cnなど)
-├── index.css            # グローバルなCSSスタイル
-├── main.tsx             # アプリケーションのエントリーポイント
-└── vite-env.d.ts        # Vite環境の型定義
+```bash
+git clone https://github.com/Toridesu/weekly-study-log.git
+cd weekly-study-log
+npm ci
+npm run dev
 ```
 
----
+開発サーバーのURLは、起動時に Vite が表示します。
+
+## Commands
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | 開発サーバーを起動 |
+| `npm run lint` | ESLint を実行 |
+| `npm run test` | ユニットテストを実行 |
+| `npm run build` | 型チェック後に本番ビルド |
+| `npm run check` | lint、test、build を順番に実行 |
+| `npm run preview` | 本番ビルドをローカルで確認 |
+
+## Architecture
+
+```text
+src/
+├── components/       # 入力フォームと表示コンポーネント
+├── constants/        # カテゴリ・自己評価などのドメイン定数
+├── hooks/            # ログの状態管理と localStorage 永続化
+├── types/            # 定数から導出したドメイン型
+├── utils/            # 日付処理、集計、保存データ検証
+├── App.tsx           # 週選択と画面構成
+└── main.tsx          # React エントリーポイント
+```
+
+ドメインロジックは UI から分離し、`src/utils/index.test.ts` で日付計算・週間集計・保存データ検証をテストしています。
+
+## Data Storage
+
+ログは `weekly-study-log:logs` キーで `localStorage` に保存されます。
+
+- 同じブラウザ・同じオリジン内でのみ利用できます。
+- ブラウザデータを削除するとログも削除されます。
+- 端末間同期、認証、クラウドバックアップはありません。
+
+## Deployment
+
+`main` ブランチへの push で GitHub Actions が `npm run check` を実行し、成功したビルドを GitHub Pages へデプロイします。
